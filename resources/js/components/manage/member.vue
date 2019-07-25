@@ -1,6 +1,5 @@
 <template>
   <div>
-    <navbar></navbar>
     <div class="content-body">
       <h2>帳號管理</h2>
       <el-button
@@ -187,8 +186,8 @@
 </template>
 <script>
 import { vTable, vColumn } from 'components/v-table';
-import apiShoppingcart from '~/api/shoppingcart';
-import navbar1 from '~/components/shoppingcart/nav';
+//import apiShoppingcart from '~/api/shoppingcart';
+
 
 export default {
   name: 'AdminAuth',

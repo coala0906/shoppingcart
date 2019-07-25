@@ -44,8 +44,8 @@
         this.activeIndex2 = key;
         this.activeIndex = keyPath;
       },
-      /*getUser() {
-        apiShoppingcart.getUser()
+      getUser() {
+        axios.get('/api/session')
       .then((resp) => {
         if (resp.data.result === true) {
           this.userData = resp.data.data;
@@ -54,16 +54,16 @@
       .catch((error) => {
         this.$message.error(error.message);
       });
-      },*/
+      },
       goIndex() {
         this.$router.push('/shoppingcart/');
-      },/*
+      },
       goCart() {
         this.$router.push('/shoppingcart/cart');
-      },*/
+      },
       gologin() {
         this.$router.push('/shoppingcart/login');
-      },/*
+      },
       goMeminfo() {
         this.$router.push('/shoppingcart/meminfo');
       },
@@ -80,24 +80,24 @@
         this.$router.push('/shoppingcart/manage/transaction');
       },
       logout() {
-        apiShoppingcart.logout()
+        axios.post('/api/session/logout')
       .then((resp) => {
         if (resp.data.result === true) {
           this.$message.success('登出成功');
           this.$router.push('/shoppingcart/login');
         } else {
           this.$message.error('請重新登出');
-          this.$router.push('/shoppingcart/main');
+          this.$router.push('/shoppingcart/');
         }
       })
       .catch((error) => {
         this.$message.error(error.message);
       });
-      },*/
+      },
     },
-    /*mounted() {
+    mounted() {
       this.getUser();
-    },*/
+    },
   };
 </script>
 

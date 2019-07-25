@@ -1,6 +1,5 @@
 <template>
   <div>
-    <navbar></navbar>
     <div class="content-body">
       <h2>訂單管理</h2>
       <el-table
@@ -84,14 +83,10 @@
   </div>
 </template>
 <script>
-import apiShoppingcart from '~/api/shoppingcart';
-import navbar1 from '~/components/shoppingcart/nav';
+//import apiShoppingcart from '~/api/shoppingcart';
 
 export default {
   name: 'AdminAuth',
-  components: {
-    navbar: navbar1,
-  },
   data() {
     return {
       pageLoading: true,
@@ -109,7 +104,7 @@ export default {
         order: ordernum,
         status: num,
       };
-      apiShoppingcart.putOrderStatus(oData)
+      axios.put('/api/transaction',oData)
     .then((resp) => {
       if (resp.data.result === true) {
         this.$message.success('修改成功');
@@ -129,7 +124,7 @@ export default {
       return parts.join('.');
     },
     getOrder(page) {
-      apiShoppingcart.getOrder(page)
+      axios.get('/api/order/' + page)
       .then((resp) => {
         if (resp.data.result === true) {
           this.tableData = resp.data.data;
@@ -151,7 +146,7 @@ export default {
         order: row.Order,
       };
       this.detailData = [];
-      apiShoppingcart.getOrderDetail(oData)
+      axios.get('/api/transaction/detail',oData)
       .then((resp) => {
         if (resp.data.result === true) {
           for (let i = 0; i < resp.data.data.length; i += 1) {
@@ -163,18 +158,6 @@ export default {
           row.children = resp.data.data;
         } else {
            this.$message.error('取得資料失敗');
-        }
-      })
-      .catch((error) => {
-        this.$message.error(error.message);
-      });
-    },
-    getUser() {
-      /* 取資料 */
-      apiShoppingcart.getUser()
-      .then((resp) => {
-        if (resp.data.result === true) {
-          this.userData = resp.data.data;
         }
       })
       .catch((error) => {

@@ -78,7 +78,7 @@
 </template>
 
 <script>
-//import apiShoppingcart from '~/api/shoppingcart';
+//import apiShoppingcart from './api/shoppingcart';
 
 export default {
   name: 'login',
@@ -132,7 +132,7 @@ export default {
       .catch((resp) => {
         this.$message.error(resp);
       });
-    },
+    },*/
     login() {
       this.now_login = true;
       this.$refs.Form.validate((valid) => {
@@ -141,11 +141,11 @@ export default {
             account: this.Form.username,
             password: this.Form.password,
           };
-          apiShoppingcart.login(oEditData)
+          axios.post('/api/session',oEditData)
             .then((resp) => {
               if (resp.data.result) {
                 this.$message.success('登入成功');
-                this.$router.push('/shoppingcart/main');
+                this.$router.push('/shoppingcart/');
               } else {
                 this.$message.error(resp.data.message);
                 this.now_login = false;
@@ -163,7 +163,7 @@ export default {
     cancel(name) {
       this.$refs[name].resetFields();
       this.addFormStatus = false;
-    },*/
+    },
     createMember() {
       this.$refs.addForm.validate((valid) => {
         if (valid) {

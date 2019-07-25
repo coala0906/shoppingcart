@@ -8,6 +8,10 @@ let routes = [
         path: '/shoppingcart/login',
         component: require('./components/login.vue').default
     },
+    {
+        path: '/shoppingcart/manage/transaction',
+        component: require('./components/manage/transaction.vue').default
+    },
 ];
 export default new VueRouter ({
     mode: 'history',
