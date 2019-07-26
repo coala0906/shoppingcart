@@ -7,24 +7,16 @@
         :data="addFormStatus"
         @click="addFormStatus = true"
       >新增帳號</el-button>
-      <v-table
+      <el-table
         :data="tableData"
-        striped
-        fix
-        v-loading="pageLoading"
-      >
-        <v-column
-          header-class="column"
+        style="width: 90%"
+        ref="table">
+        <el-table-column
           prop="id"
           label="ID"
-          filterable
         >
-          <template slot-scope="scope">
-            {{ scope.row.id }}
-          </template>
-        </v-column>
-        <v-column
-          header-class="column"
+        </el-table-column>
+        <el-table-column
           prop="permission"
           label="權限"
         >
@@ -32,34 +24,26 @@
             <el-tag type="success" v-if="scope.row.permission ==='1'">管理員</el-tag>
             <el-tag type="success" v-else>會員</el-tag>
           </template>
-        </v-column>
-        <v-column
-          header-class="column"
+        </el-table-column>
+        <el-table-column
           prop="account"
           label="帳號"
-          filterable
         >
-          <template slot-scope="scope">
-            {{ scope.row.account }}
-          </template>
-        </v-column>
-        <v-column
-          header-class="column"
+        </el-table-column>
+        <el-table-column
           prop="name"
           label="暱稱"
-          filterable
+        >
+        </el-table-column>
+        <el-table-column
+          label="狀態" 
         >
           <template slot-scope="scope">
-            {{ scope.row.name }}
-          </template>
-        </v-column>
-        <v-column header-class="column" label="狀態" filterable>
-          <template slot-scope="scope">
-            <el-tag type="success" v-if="scope.row.locked ===0">正常</el-tag>
+            <el-tag type="success" v-if="scope.row.locked ==='0'">正常</el-tag>
             <el-tag type="danger" v-else>停權</el-tag>
           </template>
-        </v-column>
-        <v-column header-class="column" label="修改">
+        </el-table-column>
+        <el-table-column label="修改">
           <template slot-scope="scope">
             <el-button
               type="primary"
@@ -69,8 +53,8 @@
               size="small"
             ></el-button>
           </template>
-        </v-column>
-      </v-table>
+        </el-table-column>
+      </el-table>
 
       <!-- dialog add form -->
       <el-dialog title="新增資料" :visible.sync="addFormStatus">
@@ -111,9 +95,9 @@
             <el-switch
               v-model="addForm.Locked"
               active-text="正常"
-              :active-value="0"
+              active-value="0"
               inactive-text="停權"
-              :inactive-value="1"
+              inactive-value="1"
               active-color="#13ce66"
               inactive-color="#ff4949"
             />
@@ -167,9 +151,9 @@
             <el-switch
               v-model="editForm.Locked"
               active-text="正常"
-              :active-value="0"
+              active-value="0"
               inactive-text="停權"
-              :inactive-value="1"
+              inactive-value="1"
               active-color="#13ce66"
               inactive-color="#ff4949"
             />
@@ -180,22 +164,12 @@
           <el-button type="primary" @click="putMember">確定</el-button>
         </div>
       </el-dialog>
-
     </div>
   </div>
 </template>
 <script>
-import { vTable, vColumn } from 'components/v-table';
-//import apiShoppingcart from '~/api/shoppingcart';
-
-
 export default {
   name: 'AdminAuth',
-  components: {
-    vTable,
-    vColumn,
-    navbar: navbar1,
-  },
   data() {
     return {
       pageLoading: true,
@@ -254,7 +228,7 @@ export default {
             locked: this.addForm.Locked,
             phone: this.addForm.Phone,
           };
-          apiShoppingcart.createMember(oEditData)
+          axios.post('/api/member',oEditData)
             .then((resp) => {
               if (resp.data.result) {
                 this.$message.success('新增成功');
@@ -276,7 +250,7 @@ export default {
     },
     getMemberList() {
       /* 取資料 */
-      apiShoppingcart.getMemberList()
+      axios.get('/api/member')
       .then((resp) => {
         if (resp.data.result === true) {
           this.tableData = resp.data.data;
@@ -315,7 +289,7 @@ export default {
             locked: this.editForm.Locked,
             phone: this.editForm.Phone,
           };
-          apiShoppingcart.putMember(oEditData.id, oEditData)
+          axios.put('/api/member/' + oEditData.id, oEditData)
             .then((resp) => {
               if (resp.data.result) {
                 this.$message.success('修改成功');

@@ -72,7 +72,7 @@ class Product extends Controller
         $fStatus = $Request->input('status');
         if ($Request->hasFile('file')) {
             $file = $Request->file('file');
-            $url_path = 'storage/uploads/cover';
+            $url_path = public_path() . '/images';
             $rule = ['jpg', 'png', 'gif','jpeg'];
             $clientName = $file->getClientOriginalName();
             $tmpName = $file->getFileName();
@@ -82,10 +82,10 @@ class Product extends Controller
                 return response()->json(['result' => false, 'message' => '圖片格式錯誤']);
             }
             $newName = md5(date("Y-m-d H:i:s") . $clientName) . "." . $entension;
-            $path = $file->move($url_path, $newName);
-            $namePath = 'http://rd-vue-eric.rd6.vir888.com/hex/shoppingcart/'.$url_path . '/' . $newName;
+            $path = $file->move($url_path,$newName);
+            $namePath = '/images/' . $newName;
         } else {
-            $namePath = 'http://rd-vue-eric.rd6.vir888.com/hex/shoppingcart/storage/uploads/cover/404.png';
+            $namePath = '/images/404.png';
         }
         $aProduct = [
         'Name'=>$sName,
@@ -123,7 +123,7 @@ class Product extends Controller
         $fStatus = $Request->input('status');
         if ($Request->hasFile('file')) {
             $file = $Request->file('file');
-            $url_path = 'storage/uploads/cover';
+            $url_path = public_path() . '/images';
             $rule = ['jpg', 'png', 'gif','jpeg'];
             $clientName = $file->getClientOriginalName();
             $tmpName = $file->getFileName();
@@ -134,7 +134,7 @@ class Product extends Controller
             }
             $newName = md5(date("Y-m-d H:i:s") . $clientName) . "." . $entension;
             $path = $file->move($url_path, $newName);
-            $namePath = 'http://rd-vue-eric.rd6.vir888.com/hex/shoppingcart/'.$url_path . '/' . $newName;
+            $namePath = '/images/' . $newName;
         }
         if (!isset($namePath)) {
             $aPutData = [

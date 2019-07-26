@@ -8,57 +8,50 @@
         :data="addFormStatus"
         @click="addFormStatus = true"
       >新增商品</el-button>
-      <v-table
+      <el-table
         :data="tableData"
-        striped
-        fix
-        v-loading="pageLoading"
+        style="width: 90%"
+        ref="table"
       >
-        <v-column
-          header-class="column"
+        <el-table-column
           prop="photo"
           label=""
         >
           <template slot-scope="scope">
             <img :src="scope.row.Image" style="width: 50%;">
           </template>
-        </v-column>
-        <v-column
-          header-class="column"
+        </el-table-column>
+        <el-table-column
           prop="Name"
           label="商品名稱"
-          filterable
         >
           <template slot-scope="scope">
             {{ scope.row.Name }}
           </template>
-        </v-column>
-        <v-column
-          header-class="column"
+        </el-table-column>
+        <el-table-column
           prop="Brand"
           label="商品品牌"
-          filterable
         >
           <template slot-scope="scope">
             {{ scope.row.Brand }}
           </template>
-        </v-column>
-        <v-column
-          header-class="column"
+        </el-table-column>
+        <el-table-column
           prop="Price"
           label="商品價格"
         >
           <template slot-scope="scope">
             ${{ scope.row.Price }}
           </template>
-        </v-column>
-        <v-column header-class="column" label="商品狀態" filterable>
+        </el-table-column>
+        <el-table-column label="商品狀態">
           <template slot-scope="scope">
-            <el-tag type="success" v-if="scope.row.Status === 1">上架</el-tag>
+            <el-tag type="success" v-if="scope.row.Status === '1'">上架</el-tag>
             <el-tag type="danger" v-else>下架</el-tag>
           </template>
-        </v-column>
-        <v-column header-class="column" label="商品修改">
+        </el-table-column>
+        <el-table-column label="商品修改">
           <template slot-scope="scope">
             <el-button
               type="primary"
@@ -68,8 +61,8 @@
               size="small"
             ></el-button>
           </template>
-        </v-column>
-      </v-table>
+        </el-table-column>
+      </el-table>
       <!-- dialog edit form -->
       <el-dialog title="修改商品資料" :visible.sync="editFormStatus">
         <el-form :model="editForm"
@@ -104,9 +97,9 @@
             <el-switch
               v-model="editForm.Status"
               active-text="上架"
-              :active-value="1"
+              active-value="1"
               inactive-text="下架"
-              :inactive-value="0"
+              inactive-value="0"
               active-color="#13ce66"
               inactive-color="#ff4949"
             />
@@ -161,9 +154,9 @@
             <el-switch
               v-model="form.new_Status"
               active-text="上架"
-              :active-value="1"
+              active-value="1"
               inactive-text="下架"
-              :inactive-value="0"
+              inactive-value="0"
               active-color="#13ce66"
               inactive-color="#ff4949"
             />
@@ -202,17 +195,8 @@
   </div>
 </template>
 <script>
-import { vTable, vColumn } from 'components/v-table';
-import apiShoppingcart from '~/api/shoppingcart';
-import navbar1 from '~/components/shoppingcart/nav';
-
 export default {
   name: 'AdminAuth',
-  components: {
-    vTable,
-    vColumn,
-    navbar: navbar1,
-  },
   data() {
     return {
       pageLoading: true,
@@ -313,7 +297,7 @@ export default {
     },
       /* 取資料 */
     getProductList(page) {
-      apiShoppingcart.getProductList(page)
+      axios.get('/api/product/' + page)
       .then((resp) => {
         if (resp.data.result === true) {
           this.tableData = resp.data.data;
@@ -364,7 +348,7 @@ export default {
           this.formData.append('price', this.editForm.Price);
           this.formData.append('information', encodeURIComponent(this.editForm.Information));
           this.formData.append('status', this.editForm.Status);
-          apiShoppingcart.postProduct(this.editForm.PID, this.formData, config)
+          axios.post('/api/product/put/' + this.editForm.PID, this.formData, config)
             .then((resp) => {
               if (resp.data.data > 0) {
                 this.$message.success('修改成功');
@@ -414,7 +398,7 @@ export default {
           this.formData.append('price', this.form.new_Price);
           this.formData.append('information', encodeURIComponent(this.form.new_Information));
           this.formData.append('status', this.form.new_Status);
-          apiShoppingcart.createProduct(this.formData, config)
+          axios.post('/api/product',this.formData,config)
             .then((resp) => {
               if (resp.data.result) {
                 this.cancel('form');
@@ -425,6 +409,7 @@ export default {
                 this.formData.delete('price');
                 this.formData.delete('information');
                 this.formData.delete('status');
+                this.formData.delete('file');
                 this.$message.success('新增成功');
                 this.pageLoading = true;
                 this.getProductList(this.currentPage);
@@ -436,7 +421,8 @@ export default {
                 this.formData.delete('price');
                 this.formData.delete('information');
                 this.formData.delete('status');
-                this.$message.error('新增失敗');
+                this.formData.delete('file');
+                this.$message.error('新增失敗' + resp.data.message);
               }
             })
             .catch((error) => {
@@ -449,6 +435,7 @@ export default {
     },
     handleRemove() {
       this.buttonStatus = false;
+      this.formData.delete('file');
     },
     pageChange(page) {
       this.currentPage = page;

@@ -12,6 +12,14 @@ let routes = [
         path: '/shoppingcart/manage/transaction',
         component: require('./components/manage/transaction.vue').default
     },
+    {
+        path: '/shoppingcart/manage/member',
+        component: require('./components/manage/member.vue').default
+    },
+    {
+        path: '/shoppingcart/manage/item',
+        component: require('./components/manage/itme.vue').default
+    },
 ];
 export default new VueRouter ({
     mode: 'history',

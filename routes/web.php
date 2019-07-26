@@ -20,20 +20,25 @@ Route::get('/shoppingcart/login', function () {
 Route::get('/shoppingcart/manage/transaction', function () {
     return view('welcome');
 });
-
+Route::get('/shoppingcart/manage/member', function () {
+    return view('welcome');
+});
+Route::get('/shoppingcart/manage/item', function () {
+    return view('welcome');
+});
 
 Route::get('api/member/','Shoppingcart\Member@getList');
 Route::get('api/member/{id}','Shoppingcart\Member@getMember');
 Route::post('api/member/','Shoppingcart\Member@createMember');
-Route::put('api/member/','Shoppingcart\Member@putMember');
+Route::put('api/member/{id}','Shoppingcart\Member@putMember');
 Route::get('api/cart/','Shoppingcart\Cart@getList');
 Route::post('api/cart/','Shoppingcart\Cart@createCart');
 Route::put('api/cart/','Shoppingcart\Cart@putCart');
 Route::post('api/cart/{id}','Shoppingcart\Cart@delCart');
-Route::get('api/product/','Shoppingcart\Product@getList');
-Route::get('api/product/{id}','Shoppingcart\Product@getProduct');
+Route::get('api/product/{page}','Shoppingcart\Product@getList');
+Route::get('api/product/item/{id}','Shoppingcart\Product@getProduct');
 Route::post('api/product/','Shoppingcart\Product@createProduct');
-Route::post('api/product/put','Shoppingcart\Product@putProduct');
+Route::post('api/product/put/{id}','Shoppingcart\Product@putProduct');
 Route::post('api/session/','Shoppingcart\Session_new@login');
 Route::get('api/session/','Shoppingcart\Session_new@getUser');
 Route::post('api/session/logout','Shoppingcart\Session_new@logout');
