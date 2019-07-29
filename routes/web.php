@@ -26,6 +26,15 @@ Route::get('/shoppingcart/manage/member', function () {
 Route::get('/shoppingcart/manage/item', function () {
     return view('welcome');
 });
+Route::get('/shoppingcart/cart', function (){
+    return view('welcome');
+});
+Route::get('/shoppingcart/purchase', function (){
+    return view('welcome');
+});
+Route::get('/shoppingcart/meminfo', function (){
+    return view('welcome');
+});
 
 Route::get('api/member/','Shoppingcart\Member@getList');
 Route::get('api/member/{id}','Shoppingcart\Member@getMember');
@@ -44,6 +53,6 @@ Route::get('api/session/','Shoppingcart\Session_new@getUser');
 Route::post('api/session/logout','Shoppingcart\Session_new@logout');
 Route::get('api/order/{page}','Shoppingcart\Transaction@getOrderList');
 Route::get('api/transaction/','Shoppingcart\Transaction@getList');
-Route::get('api/transaction/detail','Shoppingcart\Transaction@getOrderDetail');
+Route::get('api/transaction/detail/{id}','Shoppingcart\Transaction@getOrderDetail');
 Route::put('api/transaction/','Shoppingcart\Transaction@putOrderStatus');
 Route::post('api/transaction/','Shoppingcart\Transaction@createTransaction');

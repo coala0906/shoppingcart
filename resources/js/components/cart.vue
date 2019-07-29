@@ -1,6 +1,5 @@
-te>
+<template>
   <div>
-    <navbar></navbar>
     <div class="content-body">
       <h2>購物車</h2>
       <el-table
@@ -73,17 +72,8 @@ te>
   </div>
 </template>
 <script>
-import { vTable, vColumn } from 'components/v-table';
-import apiShoppingcart from '~/api/shoppingcart';
-import navbar1 from '~/components/shoppingcart/nav';
-
 export default {
   name: 'AdminAuth',
-  components: {
-    vTable,
-    vColumn,
-    navbar: navbar1,
-  },
   data() {
     return {
       pageLoading: true,
@@ -97,7 +87,7 @@ export default {
   methods: {
     getCartList() {
       /* 取資料 */
-      apiShoppingcart.getCartList()
+      axios.get('/api/cart')
       .then((resp) => {
         if (resp.data.result === true) {
           this.tableData = resp.data.data;
@@ -124,7 +114,7 @@ export default {
     },
     delCart(pid) {
       this.pageLoading = true;
-      apiShoppingcart.delCart(pid)
+      axios.post('/api/cart/' + pid)
             .then((resp) => {
               if (resp.data.result) {
                 this.$message.success('移除成功');
@@ -140,7 +130,7 @@ export default {
     },
     putCart(row) {
       this.pageLoading = true;
-      apiShoppingcart.putCart(row)
+      axios.put('/api/cart',row)
         .then((resp) => {
           if (resp.data.result) {
             this.$message.success('修改成功');
@@ -160,7 +150,7 @@ export default {
     },
     createTransaction() {
       this.pageLoading = true;
-      apiShoppingcart.createTransaction()
+      axios.post('/api/transaction')
           .then((resp) => {
             if (resp.data.result) {
               this.$message.success('購買成功');

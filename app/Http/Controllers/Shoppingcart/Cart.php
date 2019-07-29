@@ -1,4 +1,5 @@
-mespace App\Http\Controllers\Shoppingcart;
+<?php
+namespace App\Http\Controllers\Shoppingcart;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;

@@ -1,7 +1,6 @@
-te>
+<template>
   <div>
-    <navbar></navbar>
-    <div style="position: absolute; top: 30%; left: 50%;">
+    <div style="position: absolute; top: 20%; left: 45%;">
       <h2>會員資料</h2>
       <div style="margin: 20px;"></div>
       <el-form label-position="left" label-width="80px">
@@ -55,14 +54,8 @@ te>
   </div>
 </template>
 <script>
-import apiShoppingcart from '~/api/shoppingcart';
-import navbar1 from '~/components/shoppingcart/nav';
-
 export default {
   name: 'AdminAuth',
-  components: {
-    navbar: navbar1,
-  },
   data() {
     return {
       pageLoading: true,
@@ -91,7 +84,7 @@ export default {
   methods: {
     getUser() {
       /* 取資料 */
-      apiShoppingcart.getUser()
+      axios.get('/api/session')
       .then((resp) => {
         if (resp.data.result === true) {
           this.getUserInfo(resp.data.data.id);
@@ -104,7 +97,7 @@ export default {
       });
     },
     getUserInfo(id) {
-      apiShoppingcart.getMember(id)
+      axios.get('/api/member/' + id)
       .then((resp) => {
         if (resp.data.result === true) {
           this.tableData = resp.data.data[0];
@@ -139,7 +132,7 @@ export default {
             email: this.editForm.Email,
             phone: this.editForm.Phone,
           };
-          apiShoppingcart.putMember(oEditData.id, oEditData)
+          axios.put('/api/member/' + oEditData.id, oEditData)
             .then((resp) => {
               if (resp.data.result) {
                 this.$message.success('修改成功');

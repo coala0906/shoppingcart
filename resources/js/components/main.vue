@@ -1,6 +1,5 @@
 <template>
   <div>
-    <navbar></navbar>
     <div>
       <div class="w3-white w3-xlarge w3-padding-xlarge" style="max-width:1200px;margin:auto">
         <div class="w3-center">Shop</div>
@@ -9,7 +8,7 @@
         <div class="w3-row-padding w3-padding-16 w3-center" id="food">
           <div
             v-for="item in tableData"
-            v-if="item.Status===1"
+            v-if="item.Status==='1'"
             :key='item.PID'
             class="w3-quarter"
           >
@@ -92,18 +91,13 @@
 </template>
 
 <script>
-import apiShoppingcart from '~/api/shoppingcart';
-import navbar1 from '~/components/shoppingcart/nav';
-
 export default {
   name: 'AdminAuth',
-  components: {
-    navbar: navbar1,
-  },
   data() {
     return {
       tableData: [],
       userData: [],
+      page: 1,
       pageLoading: true,
       productFormStatus: false,
       productForm: {
@@ -115,7 +109,7 @@ export default {
   methods: {
     getUser() {
       /* 取資料 */
-      apiShoppingcart.getUser()
+      axios.get('/api/session')
       .then((resp) => {
         if (resp.data.result === true) {
           this.userData = resp.data.data;
@@ -126,8 +120,8 @@ export default {
       });
     },
     /* 取資料 */
-    getProductList() {
-      apiShoppingcart.getProductList()
+    getProductList(page) {
+      axios.get('/api/product/' + page)
       .then((resp) => {
         if (resp.data.result === true) {
           this.tableData = resp.data.data;
@@ -165,7 +159,7 @@ export default {
           pid: ipid,
           amount: iamount,
         };
-        apiShoppingcart.createCart(oEditData)
+        axios.post('/api/cart',oEditData)
       .then((resp) => {
         if (resp.data.result === true) {
           this.$message.success('加入購物車成功');
@@ -187,6 +181,6 @@ export default {
 };
 </script>
 <style scoped>
-  @import '/static/css/w3.css';
+  @import 'https://www.w3schools.com/w3css/4/w3.css';
 </style>
 

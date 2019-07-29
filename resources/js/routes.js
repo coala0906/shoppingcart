@@ -2,7 +2,7 @@ import VueRouter from 'vue-router';
 let routes = [
     {
         path:'/shoppingcart',
-        component: require('./components/ExampleComponent.vue').default
+        component: require('./components/main.vue').default
     },
     {
         path: '/shoppingcart/login',
@@ -19,6 +19,18 @@ let routes = [
     {
         path: '/shoppingcart/manage/item',
         component: require('./components/manage/itme.vue').default
+    },
+    {
+        path: '/shoppingcart/cart',
+        component: require('./components/cart.vue').default
+    },
+    {
+        path: '/shoppingcart/purchase',
+        component: require('./components/purchase.vue').default
+    },
+    {
+        path: '/shoppingcart/meminfo',
+        component: require('./components/meminfo.vue').default
     },
 ];
 export default new VueRouter ({

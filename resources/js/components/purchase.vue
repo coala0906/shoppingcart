@@ -1,78 +1,62 @@
 <template>
   <div>
-    <navbar></navbar>
     <div class="content-body">
       <h2>購買紀錄</h2>
-      <v-table
+      <el-table
+        @expand-change="rowExpand"
         :data="tableData"
-        striped
-        fix
-        v-loading="pageLoading"
-      >
-        <v-column
-          header-class="column"
-          prop="image"
-          label="商品圖片"
-        >
-          <template slot-scope="scope">
-            <img :src="scope.row.Image" style="width: 50%;">
+        style="width: 90%"
+        ref="table">
+        <el-table-column type="expand">
+          <template scope="scope">
+            <el-table
+              v-loading="loadRow"
+              :data="scope.row.children">
+              <el-table-column>
+                <template scope="scope">
+                  <img :src="scope.row.Image" width="60" height="60"/>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="商品名稱"
+                prop="Name">
+              </el-table-column>
+              <el-table-column
+                label="商品數量"
+                prop="Amount">
+              </el-table-column>
+              <el-table-column
+                label="商品總價"
+                prop="sum">
+              </el-table-column>
+            </el-table>
           </template>
-        </v-column>
-        <v-column
-          header-class="column"
-          prop="Name"
-          label="商品名稱"
-          filterable
-        >
-          <template slot-scope="scope">
-            {{ scope.row.Name }}
+        </el-table-column>
+        <el-table-column
+          label="訂單編號"
+          prop="Order">
+        </el-table-column>
+        <el-table-column
+          label="訂單狀態"
+          prop="Status">
+          <template scope="scope">
+            <p v-if="scope.row.Status === '0'">已下單</p>
+            <p v-if="scope.row.Status === '1'">處理中</p>
+            <p v-if="scope.row.Status === '2'">已出貨</p>
+            <p v-if="scope.row.Status === '3'">已取消</p>
           </template>
-        </v-column>
-        <v-column
-          header-class="column"
-          prop="Price"
-          label="商品價格"
-          filterable
-        >
-          <template slot-scope="scope">
-            ${{ scope.row.Price }}
-          </template>
-        </v-column>
-        <v-column
-          header-class="column"
-          prop="Amount"
-          label="商品數量"
-          filterable
-        >
-          <template slot-scope="scope">
-            {{ scope.row.Amount }}
-          </template>
-        </v-column>
-        <v-column
-          header-class="column"
-          prop="date"
-          label="購買日期"
-        >
-          <template slot-scope="scope">
-            {{ scope.row.created_at }}
-          </template>
-        </v-column>
-      </v-table>
+        </el-table-column>
+        <el-table-column
+          label="訂購日期"
+          prop="created_at">
+        </el-table-column>
+      </el-table>
     </div>
   </div>
 </template>
 <script>
-import { vTable, vColumn } from 'components/v-table';
-import apiShoppingcart from '~/api/shoppingcart';
-import navbar1 from '~/components/shoppingcart/nav';
-
 export default {
   name: 'AdminAuth',
-  components: {
-    vTable,
-    vColumn,
-    navbar: navbar1,
-  },
   data() {
     return {
       pageLoading: true,
@@ -80,6 +64,7 @@ export default {
       editFormStatus: false,
       tableData: [],
       formUser: {},
+      detailData: [],
       editForm: {
         Account: '',
         Password: '',
@@ -97,7 +82,7 @@ export default {
         page: this.currentPage,
       };
       /* 取資料 */
-      apiShoppingcart.getTransaction(oData)
+      axios.get('/api/transaction',oData)
       .then((resp) => {
         if (resp.data.result === true) {
           this.tableData = resp.data.data;
@@ -109,6 +94,33 @@ export default {
       .catch((error) => {
         this.$message.error(error.message);
       });
+    },
+    rowExpand(row, expandedRows) {
+      if (expandedRows.length > 1) {
+        expandedRows.shift();
+      }
+      this.loadRow = true;
+      const oData = {
+        order: row.Order,
+      };
+      this.detailData = [];
+      axios.get('/api/transaction/detail/' + row.Order)
+      .then((resp) => {
+        if (resp.data.result === true) {
+          for (let i = 0; i < resp.data.data.length; i += 1) {
+            resp.data.data[i].sum = resp.data.data[i].Price * resp.data.data[i].Amount;
+            resp.data.data[i].sum = `$${resp.data.data[i].sum}`;
+          }
+          this.loadRow = false;
+          row.children = resp.data.data;
+        } else {
+           this.$message.error('取得資料失敗');
+        }
+      })
+      .catch((error) => {
+        this.$message.error(error.message);
+      });
+      this.loadRow = false;
     },
     pageChange(page) {
       this.currentPage = page;

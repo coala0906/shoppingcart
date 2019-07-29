@@ -1,10 +1,10 @@
 <template>
   <div>
-    <navbar></navbar>
     <div class="content-body">
       <h2>商品管理</h2>
       <el-button
         type="primary"
+        v-loading="pageLoading"
         :data="addFormStatus"
         @click="addFormStatus = true"
       >新增商品</el-button>
@@ -297,6 +297,7 @@ export default {
     },
       /* 取資料 */
     getProductList(page) {
+      this.pageLoading = true;
       axios.get('/api/product/' + page)
       .then((resp) => {
         if (resp.data.result === true) {
@@ -310,6 +311,7 @@ export default {
       .catch((error) => {
         this.$message.error(error.message);
       });
+      this.pageLoading = false;
     },
     fileChange(file) {
       const exp = /.\.jpg|.\.gif|.\.png|.\.jpeg|.\.bmp/i;

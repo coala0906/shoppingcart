@@ -25,16 +25,13 @@ class Transaction extends Controller
         $aTransactionList = [];
         $sId = Session::get('id');
         $sPermission = $Request->input('permission');
-        $aTransactionList = transactions::join('products','transactions.PID','products.PID')
-        ->select('transactions.*','products.Name','products.Brand','products.Information','products.Image')
-        ->where('ID','=',$sId)
+        $aTransactionList = transactions::join('members','transactions.ID','members.id')
+        ->select('transactions.*')
+        ->where('transactions.ID','=',$sId)
+        ->groupBy('Order')
         ->orderBy('transactions.created_at','desc')
         ->get()
         ->toArray();
-        while(isset($aTransactionList[$num]['Price'])){
-            $aTransactionList[$num]['Price'] = number_format($aTransactionList[$num]['Price']);
-            $num  =  $num + 1;
-        }
         return response()->json(['result' => true, 'data' => $aTransactionList]);
     }
 
@@ -61,8 +58,8 @@ class Transaction extends Controller
      * @param  Request $Request
      * @return json
      */
-    public function getOrderDetail(Request $Request) {
-        $sOrdernum = $Request->input('order');
+    public function getOrderDetail($_sOrder) {
+        $sOrdernum = $_sOrder;
         $aOrderList = transactions::join('products','transactions.PID','products.PID')
         ->select('transactions.*','products.Name','products.Brand','products.Image')
         ->where('Order','=',$sOrdernum)

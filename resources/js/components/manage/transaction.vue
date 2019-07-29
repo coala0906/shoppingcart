@@ -43,19 +43,19 @@
             <el-select v-model="scope.row.Status" placeholder="請選擇" @change="putOrderStatus($event,scope.row.Order)">
               <el-option
                 label="已下單"
-                :value="0">
+                value="0">
               </el-option>
               <el-option
                 label="處理中"
-                :value="1">
+                value="1">
               </el-option>
               <el-option
                 label="已出貨"
-                :value="2">
+                value="2">
               </el-option>
               <el-option
                 label="已取消"
-                :value="3">
+                value="3">
               </el-option>
             </el-select>
           </template>
@@ -83,8 +83,6 @@
   </div>
 </template>
 <script>
-//import apiShoppingcart from '~/api/shoppingcart';
-
 export default {
   name: 'AdminAuth',
   data() {
@@ -146,7 +144,8 @@ export default {
         order: row.Order,
       };
       this.detailData = [];
-      axios.get('/api/transaction/detail',oData)
+      console.log(row.Order);
+      axios.get('/api/transaction/detail/' + row.Order)
       .then((resp) => {
         if (resp.data.result === true) {
           for (let i = 0; i < resp.data.data.length; i += 1) {
@@ -179,6 +178,10 @@ export default {
 .page-area {
   text-align: center;
   margin: 5px;
+}
+.content-body {
+  padding: 10px;
+  width: auto;
 }
 </style>
 
