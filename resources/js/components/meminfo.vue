@@ -88,8 +88,6 @@ export default {
       .then((resp) => {
         if (resp.data.result === true) {
           this.getUserInfo(resp.data.data.id);
-        } else {
-          this.$message.error('取得資料失敗');
         }
       })
       .catch((error) => {
@@ -156,6 +154,9 @@ export default {
       this.addFormStatus = false;
       this.editFormStatus = false;
     },
+  },
+  beforeCreate() {
+    this.$emit('check');
   },
   mounted() {
     this.getUser();

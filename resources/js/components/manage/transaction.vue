@@ -168,6 +168,9 @@ export default {
       this.getOrder(this.currentPage);
     },
   },
+  beforeCreate() {
+    this.$emit('check');
+  },
   mounted() {
     this.getOrder(this.currentPage);
   },

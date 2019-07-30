@@ -78,8 +78,6 @@
 </template>
 
 <script>
-//import apiShoppingcart from './api/shoppingcart';
-
 export default {
   name: 'login',
   data() {
@@ -145,6 +143,7 @@ export default {
             .then((resp) => {
               if (resp.data.result) {
                 this.$message.success('登入成功');
+                this.$emit('login');
                 this.$router.push('/shoppingcart/');
               } else {
                 this.$message.error(resp.data.message);
@@ -153,6 +152,7 @@ export default {
             })
             .catch((error) => {
               this.$message.error(error.message);
+              this.now_login = false;
             });
         } else {
           this.$message.error('請修正錯誤欄位');

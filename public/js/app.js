@@ -3333,11 +3333,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      count: 0
+    };
+  },
   components: {
     navbar: _nav_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  methods: {
+    reload: function reload() {
+      this.$refs.navbar.getUser();
+    },
+    check: function check() {
+      var _this = this;
+
+      axios.get('/api/session').then(function (resp) {
+        if (!resp.data.result) {
+          _this.$router.push('/shoppingcart/login');
+
+          _this.$message.error('尚未登入');
+        }
+      })["catch"](function (error) {
+        _this.$message.error(error.message);
+      });
+    }
   }
 });
 
@@ -3557,6 +3579,9 @@ __webpack_require__.r(__webpack_exports__);
       });
     }
   },
+  beforeCreate: function beforeCreate() {
+    this.$emit('check');
+  },
   mounted: function mounted() {
     this.getCartList();
   }
@@ -3652,7 +3677,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//import apiShoppingcart from './api/shoppingcart';
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'login',
   data: function data() {
@@ -3735,6 +3759,8 @@ __webpack_require__.r(__webpack_exports__);
             if (resp.data.result) {
               _this.$message.success('登入成功');
 
+              _this.$emit('login');
+
               _this.$router.push('/shoppingcart/');
             } else {
               _this.$message.error(resp.data.message);
@@ -3743,6 +3769,8 @@ __webpack_require__.r(__webpack_exports__);
             }
           })["catch"](function (error) {
             _this.$message.error(error.message);
+
+            _this.now_login = false;
           });
         } else {
           _this.$message.error('請修正錯誤欄位');
@@ -4513,6 +4541,9 @@ __webpack_require__.r(__webpack_exports__);
       this.getProductList(this.currentPage);
     }
   },
+  beforeCreate: function beforeCreate() {
+    this.$emit('check');
+  },
   mounted: function mounted() {
     this.getProductList(this.currentPage);
   }
@@ -4859,6 +4890,9 @@ __webpack_require__.r(__webpack_exports__);
       this.editFormStatus = false;
     }
   },
+  beforeCreate: function beforeCreate() {
+    this.$emit('check');
+  },
   mounted: function mounted() {
     this.getMemberList();
   }
@@ -5048,6 +5082,9 @@ __webpack_require__.r(__webpack_exports__);
       this.getOrder(this.currentPage);
     }
   },
+  beforeCreate: function beforeCreate() {
+    this.$emit('check');
+  },
   mounted: function mounted() {
     this.getOrder(this.currentPage);
   }
@@ -5160,8 +5197,6 @@ __webpack_require__.r(__webpack_exports__);
       axios.get('/api/session').then(function (resp) {
         if (resp.data.result === true) {
           _this.getUserInfo(resp.data.data.id);
-        } else {
-          _this.$message.error('取得資料失敗');
         }
       })["catch"](function (error) {
         _this.$message.error(error.message);
@@ -5229,6 +5264,9 @@ __webpack_require__.r(__webpack_exports__);
       this.addFormStatus = false;
       this.editFormStatus = false;
     }
+  },
+  beforeCreate: function beforeCreate() {
+    this.$emit('check');
   },
   mounted: function mounted() {
     this.getUser();
@@ -5331,6 +5369,8 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/api/session/logout').then(function (resp) {
         if (resp.data.result === true) {
           _this2.$message.success('登出成功');
+
+          _this2.userData = [];
 
           _this2.$router.push('/shoppingcart/login');
         } else {
@@ -5493,6 +5533,9 @@ __webpack_require__.r(__webpack_exports__);
       this.addFormStatus = false;
       this.editFormStatus = false;
     }
+  },
+  beforeCreate: function beforeCreate() {
+    this.$emit('check');
   },
   mounted: function mounted() {
     this.getTransaction();
@@ -99811,7 +99854,15 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_c("navbar"), _vm._v(" "), _c("router-view")], 1)
+  return _c(
+    "div",
+    [
+      _c("navbar", { ref: "navbar" }),
+      _vm._v(" "),
+      _c("router-view", { on: { login: _vm.reload, check: _vm.check } })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

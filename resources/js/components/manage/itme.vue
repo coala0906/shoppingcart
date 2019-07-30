@@ -444,6 +444,9 @@ export default {
       this.getProductList(this.currentPage);
     },
   },
+  beforeCreate() {
+    this.$emit('check');
+  },
   mounted() {
     this.getProductList(this.currentPage);
   },

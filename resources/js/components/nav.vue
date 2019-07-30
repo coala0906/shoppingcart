@@ -84,6 +84,7 @@
       .then((resp) => {
         if (resp.data.result === true) {
           this.$message.success('登出成功');
+          this.userData = [];
           this.$router.push('/shoppingcart/login');
         } else {
           this.$message.error('請重新登出');

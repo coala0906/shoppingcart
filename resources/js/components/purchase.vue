@@ -131,6 +131,9 @@ export default {
       this.editFormStatus = false;
     },
   },
+  beforeCreate() {
+    this.$emit('check');
+  },
   mounted() {
     this.getTransaction();
   },

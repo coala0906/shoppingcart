@@ -193,6 +193,9 @@ export default {
       });
     },
   },
+  beforeCreate() {
+    this.$emit('check');
+  },
   mounted() {
     this.getCartList();
   },
