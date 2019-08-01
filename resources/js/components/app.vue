@@ -1,7 +1,7 @@
 <template>
     <div> 
         <navbar ref='navbar'></navbar>
-        <router-view @login='reload' @check='check'></router-view>
+        <router-view @login='reload' @check='check' @select='select'></router-view>
     </div>
 </template>
 
@@ -19,6 +19,9 @@
         methods:{
         reload() {
         this.$refs.navbar.getUser();
+        },
+        select(i) {
+        this.$refs.navbar.changeSelect(i);
         },
         check() {
         axios.get('/api/session')

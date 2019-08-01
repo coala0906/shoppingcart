@@ -348,7 +348,8 @@ export default {
           this.formData.append('brand', this.editForm.Brand);
           this.formData.append('amount', this.editForm.Amount);
           this.formData.append('price', this.editForm.Price);
-          this.formData.append('information', encodeURIComponent(this.editForm.Information));
+          //this.formData.append('information', encodeURIComponent(this.editForm.Information));
+          this.formData.append('information', this.editForm.Information);
           this.formData.append('status', this.editForm.Status);
           axios.post('/api/product/put/' + this.editForm.PID, this.formData, config)
             .then((resp) => {
@@ -449,6 +450,7 @@ export default {
   },
   mounted() {
     this.getProductList(this.currentPage);
+    this.$emit('select','9');
   },
 };
 

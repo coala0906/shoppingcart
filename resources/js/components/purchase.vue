@@ -136,6 +136,7 @@ export default {
   },
   mounted() {
     this.getTransaction();
+    this.$emit('select','4');
   },
 };
 

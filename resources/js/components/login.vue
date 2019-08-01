@@ -192,6 +192,9 @@ export default {
       });
     },
   },
+  mounted(){ 
+  this.$emit('select','7');
+  },
 };
 </script>
 

@@ -3347,6 +3347,9 @@ __webpack_require__.r(__webpack_exports__);
     reload: function reload() {
       this.$refs.navbar.getUser();
     },
+    select: function select(i) {
+      this.$refs.navbar.changeSelect(i);
+    },
     check: function check() {
       var _this = this;
 
@@ -3583,6 +3586,7 @@ __webpack_require__.r(__webpack_exports__);
     this.$emit('check');
   },
   mounted: function mounted() {
+    this.$emit('select', '3');
     this.getCartList();
   }
 });
@@ -3811,6 +3815,9 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     }
+  },
+  mounted: function mounted() {
+    this.$emit('select', '7');
   }
 });
 
@@ -4001,6 +4008,9 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
     }
+  },
+  beforeCreate: function beforeCreate() {
+    this.$emit('select', '1');
   },
   mounted: function mounted() {
     this.getProductList();
@@ -4397,9 +4407,10 @@ __webpack_require__.r(__webpack_exports__);
 
           _this2.formData.append('amount', _this2.editForm.Amount);
 
-          _this2.formData.append('price', _this2.editForm.Price);
+          _this2.formData.append('price', _this2.editForm.Price); //this.formData.append('information', encodeURIComponent(this.editForm.Information));
 
-          _this2.formData.append('information', encodeURIComponent(_this2.editForm.Information));
+
+          _this2.formData.append('information', _this2.editForm.Information);
 
           _this2.formData.append('status', _this2.editForm.Status);
 
@@ -4546,6 +4557,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.getProductList(this.currentPage);
+    this.$emit('select', '9');
   }
 });
 
@@ -4895,6 +4907,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.getMemberList();
+    this.$emit('select', '8');
   }
 });
 
@@ -5087,6 +5100,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.getOrder(this.currentPage);
+    this.$emit('select', '10');
   }
 });
 
@@ -5270,6 +5284,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.getUser();
+    this.$emit('select', '6');
   }
 });
 
@@ -5381,6 +5396,9 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         _this2.$message.error(error.message);
       });
+    },
+    changeSelect: function changeSelect(i) {
+      this.activeIndex2 = i;
     }
   },
   mounted: function mounted() {
@@ -5539,6 +5557,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.getTransaction();
+    this.$emit('select', '4');
   }
 });
 
@@ -99859,7 +99878,9 @@ var render = function() {
     [
       _c("navbar", { ref: "navbar" }),
       _vm._v(" "),
-      _c("router-view", { on: { login: _vm.reload, check: _vm.check } })
+      _c("router-view", {
+        on: { login: _vm.reload, check: _vm.check, select: _vm.select }
+      })
     ],
     1
   )

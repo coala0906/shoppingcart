@@ -173,6 +173,7 @@ export default {
   },
   mounted() {
     this.getOrder(this.currentPage);
+    this.$emit('select','10');
   },
 };
 

@@ -197,6 +197,7 @@ export default {
     this.$emit('check');
   },
   mounted() {
+    this.$emit('select','3');
     this.getCartList();
   },
 };

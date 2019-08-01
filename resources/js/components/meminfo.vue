@@ -160,6 +160,7 @@ export default {
   },
   mounted() {
     this.getUser();
+    this.$emit('select','6');
   },
 };
 

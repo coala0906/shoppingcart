@@ -95,6 +95,9 @@
         this.$message.error(error.message);
       });
       },
+     changeSelect(i) {
+       this.activeIndex2 = i;
+      },
     },
     mounted() {
       this.getUser();

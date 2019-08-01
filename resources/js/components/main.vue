@@ -174,6 +174,9 @@ export default {
       }
     },
   },
+  beforeCreate() {
+  this.$emit('select','1')
+  },
   mounted() {
     this.getProductList();
     this.getUser();

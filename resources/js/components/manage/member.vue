@@ -319,6 +319,7 @@ export default {
   },
   mounted() {
     this.getMemberList();
+    this.$emit('select','8');
   },
 };
 
